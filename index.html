@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hocnghehr.com - Nền Tảng Đào Tạo Nhân Sự Thực Chiến</title>
+    
+    <meta name="description" content="Hocnghehr.com là nền tảng đào tạo nhân sự thực chiến, cung cấp các lộ trình và khóa học dựa trên case study thực tế tại Việt Nam, giúp bạn tự tin bứt phá trong sự nghiệp.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Oswald -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons for modern icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <script>
+        // Custom Tailwind CSS Configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'oswald': ['Oswald', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-orange': '#FF9800',
+                        'brand-green': '#009688',
+                        'brand-blue': {
+                            'light': '#5C6BC0',
+                            'dark': '#1a237e',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Oswald', sans-serif;
+            background-color: #f8fafc;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FF9800;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #1a237e, #5C6BC0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(255, 152, 0, 0.6);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+        }
+        /* Styles for Modal/Detail Views */
+        .detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none; /* Initially hidden */
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .detail-modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .detail-modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close-modal-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+        }
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        /* AI Tool Modal Styles */
+        .ai-chat-bubble {
+            background-color: #f1f5f9;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border-top-left-radius: 0.25rem;
+            max-width: 80%;
+        }
+        .user-chat-bubble {
+            background-color: #c7d2fe;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border-top-right-radius: 0.25rem;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- HEADER & NAVIGATION -->
+    <header id="header" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-3">
+            <nav class="flex items-center justify-between">
+                <a href="#home" class="text-3xl font-bold text-brand-blue-dark tracking-wider">
+                    Hocnghe<span class="text-brand-orange">HR</span>.com
+                </a>
+                
+                <!-- Desktop Menu -->
+                <ul class="hidden md:flex items-center space-x-8 font-medium text-lg">
+                    <li><a href="#home" class="nav-link active">Trang chủ</a></li>
+                    <li><a href="#learning-paths" class="nav-link">Lộ trình học</a></li>
+                    <li><a href="#resources" class="nav-link">Thư viện</a></li>
+                    <li><a href="#ai-tools" class="nav-link">Công cụ AI</a></li>
+                    <li><a href="#about" class="nav-link">Giới thiệu</a></li>
+                    <li><a href="#contact" class="nav-link">Liên hệ</a></li>
+                </ul>
+
+                <a href="#learning-paths" class="hidden md:inline-block bg-brand-orange text-white font-bold py-2 px-6 rounded-full cta-button">
+                    Khám Phá Khóa Học
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="md:hidden">
+                    <i data-feather="menu" class="h-6 w-6 text-brand-blue-dark"></i>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <ul class="flex flex-col items-center space-y-4 py-4 font-medium">
+                <li><a href="#home" class="nav-link mobile-nav-link active">Trang chủ</a></li>
+                <li><a href="#learning-paths" class="nav-link mobile-nav-link">Lộ trình học</a></li>
+                <li><a href="#resources" class="nav-link mobile-nav-link">Thư viện</a></li>
+                <li><a href="#ai-tools" class="nav-link mobile-nav-link">Công cụ AI</a></li>
+                <li><a href="#about" class="nav-link mobile-nav-link">Giới thiệu</a></li>
+                <li><a href="#contact" class="nav-link mobile-nav-link">Liên hệ</a></li>
+                <li>
+                    <a href="#learning-paths" class="bg-brand-orange text-white font-bold py-2 px-6 rounded-full cta-button mt-4 inline-block">
+                        Khám Phá Khóa Học
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. HOMEPAGE SECTION -->
+        <section id="home" class="relative hero-bg text-white pt-32 pb-24">
+            <div class="absolute inset-0 bg-brand-blue-dark opacity-80"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight tracking-wide">
+                    Nền Tảng Đào Tạo Nhân Sự <span class="text-brand-orange">Thực Chiến</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto font-light">
+                    Biến lý thuyết thành kỹ năng, biến thách thức thành cơ hội. Chúng tôi đồng hành cùng bạn trên mọi nấc thang sự nghiệp.
+                </p>
+                <a href="#learning-paths" class="bg-brand-orange text-white font-bold text-xl py-4 px-10 rounded-full cta-button shadow-lg">
+                    Khám Phá Các Lộ Trình Học
+                </a>
+            </div>
+        </section>
+
+        <!-- Vấn đề & Giải pháp -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold gradient-text">Sự Tự Tin Thực Sự Đến Từ Năng Lực Thực Tế</h2>
+                    <p class="text-lg text-gray-600 mt-2">Chúng tôi thấu hiểu "nỗi đau" của bạn khi kiến thức sách vở không đủ để giải quyết vấn đề.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-red-100 text-red-500 p-3 rounded-full"><i data-feather="book-open" class="h-6 w-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-brand-blue-dark">Kiến thức sách vở, thiếu thực tế</h3>
+                                <p class="text-gray-600">Bạn thuộc lòng lý thuyết nhưng lại "đứng hình" khi đối mặt với một case study nhân sự phức tạp từ sếp.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-yellow-100 text-yellow-500 p-3 rounded-full"><i data-feather="compass" class="h-6 w-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-brand-blue-dark">Mông lung về lộ trình phát triển</h3>
+                                <p class="text-gray-600">Bạn không biết cần học kỹ năng gì tiếp theo, làm gì để được thăng tiến lên vị trí Senior, Manager.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-start space-x-4">
+                            <div class="bg-blue-100 text-blue-500 p-3 rounded-full"><i data-feather="users" class="h-6 w-6"></i></div>
+                            <div>
+                                <h3 class="text-xl font-semibold text-brand-blue-dark">"Đơn độc" trên con đường sự nghiệp</h3>
+                                <p class="text-gray-600">Bạn thiếu một người dẫn dắt, một cộng đồng chuyên môn để hỏi đáp và chia sẻ kinh nghiệm.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-brand-green text-white p-8 rounded-lg shadow-xl">
+                        <h3 class="text-3xl font-bold mb-4">Giải Pháp Từ Hocnghe<span class="text-brand-orange">HR</span>: Thực Chiến Để Tự Tin</h3>
+                        <p class="text-lg font-light leading-relaxed">
+                            Chúng tôi không phải là một thư viện khóa học, mà là một "phòng gym" cho sự nghiệp. Với 80% thời lượng tập trung vào <span class="font-semibold">case study thực tế từ các doanh nghiệp Việt Nam</span>, <span class="font-semibold">dự án ứng dụng</span> và <span class="font-semibold">bộ công cụ chuyên nghiệp</span>, bạn sẽ được "rèn luyện" để tự tin giải quyết mọi bài toán nhân sự và bứt phá trong sự nghiệp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lộ trình học -->
+        <section id="learning-paths" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold gradient-text">Lộ Trình Học Chuyên Biệt</h2>
+                    <p class="text-lg text-gray-600 mt-2 max-w-3xl mx-auto">Đừng học các kỹ năng rời rạc. Hãy chinh phục mục tiêu sự nghiệp với một lộ trình được thiết kế bài bản, giúp bạn hệ thống hóa kiến thức và phát triển toàn diện.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center card-hover border-t-4 border-brand-orange">
+                        <i data-feather="star" class="h-12 w-12 text-brand-orange mx-auto mb-4"></i>
+                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2">HR Foundation: Nền Tảng Vững Chắc</h3>
+                        <p class="text-gray-600 mb-4"><strong>Dành cho:</strong> Sinh viên mới ra trường, người chuyển ngành. <strong>Đầu ra:</strong> Tự tin ứng tuyển vị trí HR Executive.</p>
+                        <button data-path="foundation" class="view-path-detail font-semibold text-brand-green hover:underline">Xem chi tiết &rarr;</button>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center card-hover border-t-4 border-brand-green">
+                        <i data-feather="target" class="h-12 w-12 text-brand-green mx-auto mb-4"></i>
+                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2">Recruitment Expert: Chuyên Gia Tuyển Dụng</h3>
+                        <p class="text-gray-600 mb-4"><strong>Dành cho:</strong> Recruiter 1-2 năm kinh nghiệm. <strong>Đầu ra:</strong> Trở thành Talent Acquisition Specialist.</p>
+                        <button data-path="recruitment" class="view-path-detail font-semibold text-brand-green hover:underline">Xem chi tiết &rarr;</button>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center card-hover border-t-4 border-brand-blue-light">
+                        <i data-feather="bar-chart-2" class="h-12 w-12 text-brand-blue-light mx-auto mb-4"></i>
+                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2">HR Generalist: Quản Trị Nhân Sự Toàn Diện</h3>
+                        <p class="text-gray-600 mb-4"><strong>Dành cho:</strong> HR Executive muốn phát triển. <strong>Đầu ra:</strong> Đảm nhiệm vị trí HR Generalist, HRBP.</p>
+                        <button data-path="generalist" class="view-path-detail font-semibold text-brand-green hover:underline">Xem chi tiết &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Thư viện kiến thức -->
+        <section id="resources" class="py-20 bg-white">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-brand-blue-dark">Thư Viện Kiến Thức Nhân Sự</h2>
+                </div>
+                
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Featured Article -->
+                    <div class="lg:col-span-2 bg-gray-50 rounded-lg shadow-lg overflow-hidden card-hover">
+                         <div class="cursor-pointer" data-resource="recruitment-process" onclick="showResourceDetail(this)">
+                            <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=2071&auto=format&fit=crop" class="w-full h-80 object-cover" alt="Quy trình tuyển dụng">
+                            <div class="p-8">
+                                <span class="text-sm font-semibold text-brand-orange">BÀI VIẾT NỔI BẬT</span>
+                                <h3 class="text-3xl font-bold text-brand-blue-dark my-2">Hướng Dẫn Toàn Tập: Quy Trình Tuyển Dụng 7 Bước Cho Doanh Nghiệp Việt Nam</h3>
+                                <p class="text-gray-600 mb-4">Biến tuyển dụng từ một "canh bạc" may rủi thành một cỗ máy chiến lược, mang về những nhân tài phù hợp nhất...</p>
+                                <span class="font-semibold text-brand-green hover:underline">Đọc ngay &rarr;</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sidebar: Other resources -->
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h4 class="text-xl font-bold text-brand-blue-dark mb-3">Case Studies Mới Nhất</h4>
+                            <ul class="space-y-2">
+                                <li><button class="text-left hover:text-brand-green" data-resource="case-vng" onclick="showResourceDetail(this)">Giải mã: VNG đã xây dựng văn hóa tự chủ như thế nào?</button></li>
+                                <li><button class="text-left hover:text-brand-green" data-resource="case-tch" onclick="showResourceDetail(this)">Bài học tuyển dụng nhân sự Gen Z từ The Coffee House</button></li>
+                            </ul>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h4 class="text-xl font-bold text-brand-blue-dark mb-3">Tải Về Miễn Phí</h4>
+                            <ul class="space-y-2">
+                                <li><button class="flex items-center hover:text-brand-green" data-resource="template-onboarding" onclick="showResourceDetail(this)"><i data-feather="file-text" class="h-4 w-4 mr-2"></i>Bộ 10 template Onboarding</button></li>
+                                <li><button class="flex items-center hover:text-brand-green" data-resource="template-interview" onclick="showResourceDetail(this)"><i data-feather="file-text" class="h-4 w-4 mr-2"></i>Checklist Phỏng vấn Ứng viên</button></li>
+                            </ul>
+                        </div>
+                        <div class="bg-brand-green text-white p-6 rounded-lg shadow-md">
+                             <h4 class="text-xl font-bold mb-3">Webinar Sắp Diễn Ra</h4>
+                             <p>Cập nhật xu hướng và kỹ năng mới nhất cùng chuyên gia đầu ngành.</p>
+                             <a href="#" class="mt-4 inline-block bg-white text-brand-green font-bold py-2 px-4 rounded-full">Xem lịch & Đăng ký</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI TOOLS SECTION -->
+        <section id="ai-tools" class="py-20">
+            <div class="container mx-auto px-6">
+                 <div class="relative text-center mb-16">
+                    <img src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=2070&auto=format&fit=crop" alt="Trợ lý AI" class="w-full h-64 object-cover rounded-lg opacity-80"/>
+                    <div class="absolute inset-0 bg-brand-blue-dark bg-opacity-70 flex flex-col justify-center items-center rounded-lg p-4">
+                        <h2 class="text-4xl font-bold text-white">Trợ Lý Nhân Sự AI 4.0</h2>
+                        <p class="text-lg text-gray-200 mt-2">Trải nghiệm điểm nhấn công nghệ độc đáo, giúp bạn làm việc hiệu quả và chuyên nghiệp hơn.</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Tool 1 -->
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center card-hover">
+                        <i data-feather="mic" class="h-12 w-12 text-brand-green mx-auto mb-4"></i>
+                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2">Mô phỏng phỏng vấn</h3>
+                        <p class="text-gray-600 mb-4">Thực hành phỏng vấn với AI, nhận phản hồi tức thì về cách đặt câu hỏi và ngôn ngữ cơ thể.</p>
+                        <button data-tool="interview" class="view-tool-detail font-semibold text-brand-orange hover:underline">Thử ngay &rarr;</button>
+                    </div>
+                    <!-- Tool 2 -->
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center card-hover">
+                        <i data-feather="edit" class="h-12 w-12 text-brand-blue-light mx-auto mb-4"></i>
+                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2">Trợ lý soạn thảo HR</h3>
+                        <p class="text-gray-600 mb-4">AI hỗ trợ viết JD, email, chính sách... chuyên nghiệp, chuẩn xác và nhanh chóng hơn.</p>
+                        <button data-tool="writer" class="view-tool-detail font-semibold text-brand-orange hover:underline">Thử ngay &rarr;</button>
+                    </div>
+                    <!-- Tool 3 -->
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center card-hover">
+                        <i data-feather="file-text" class="h-12 w-12 text-brand-blue-dark mx-auto mb-4"></i>
+                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2">Chấm điểm & gợi ý sửa CV</h3>
+                        <p class="text-gray-600 mb-4">Tải CV lên và để AI phân tích, đưa ra gợi ý cải thiện để gây ấn tượng với nhà tuyển dụng.</p>
+                        <button data-tool="cv" class="view-tool-detail font-semibold text-brand-orange hover:underline">Thử ngay &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="py-20 bg-brand-blue-dark text-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold">Học Viên Nói Gì Về Chúng Tôi?</h2>
+                    <p class="text-lg text-gray-300 mt-2">Sự tự tin và thành công của bạn là niềm tự hào của chúng tôi.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-gray-800">
+                    <!-- Testimonial Card 1 -->
+                    <div class="bg-white p-8 rounded-lg shadow-xl">
+                        <p class="mb-6 italic">"Các case study về xử lý kỷ luật lao động rất thực tế, giúp mình áp dụng được ngay vào công việc. Giảng viên cũng rất nhiệt tình hỗ trợ sau khóa học qua nhóm chung."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.pravatar.cc/100?u=a042581f4e29026704d" alt="Mai Anh" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-bold">Nguyễn Thị Mai Anh</p>
+                                <p class="text-sm text-gray-600">HR Executive</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 2 (UPDATED) -->
+                    <div class="bg-white p-8 rounded-lg shadow-xl">
+                        <p class="mb-6 italic">"Phương pháp của cô rất thực tế, tôi đã áp dụng ngay vào công việc và thấy hiệu quả rõ rệt!"</p>
+                        <div class="flex items-center">
+                            <img src="https://i.pravatar.cc/100?u=a042581f4e29026705d" alt="Trưởng phòng" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-bold">Chị Minh Anh</p>
+                                <p class="text-sm text-gray-600">Trưởng phòng Nhân sự</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial Card 3 -->
+                    <div class="bg-white p-8 rounded-lg shadow-xl">
+                        <p class="mb-6 italic">"Mình thích nhất là cộng đồng học viên. Mọi người rất sẵn lòng chia sẻ kinh nghiệm, biểu mẫu, giúp mình giải quyết nhiều vấn đề khó trong công việc C&B."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.pravatar.cc/100?u=a042581f4e29026706d" alt="Lê Hoa" class="w-12 h-12 rounded-full mr-4">
+                            <div>
+                                <p class="font-bold">Lê Thị Hoa</p>
+                                <p class="text-sm text-gray-600">C&B Officer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ABOUT US -->
+        <section id="about" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold gradient-text">Về Hocnghe<span class="text-brand-orange">HR</span>.com</h2>
+                    <p class="text-lg text-gray-600 mt-2">Câu chuyện, sứ mệnh và những con người đứng sau.</p>
+                </div>
+                <!-- Sứ mệnh & Câu chuyện -->
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
+                    <div>
+                        <h3 class="text-3xl font-bold text-brand-blue-dark mb-4">Sứ Mệnh: Thực Chiến Để Tự Tin</h3>
+                        <p class="text-gray-700 leading-relaxed mb-6">
+                            HocngheHR.com ra đời từ trăn trở về khoảng cách giữa kiến thức học thuật và yêu cầu công việc thực tế trong ngành Nhân sự tại Việt Nam. Sứ mệnh của chúng tôi là "Trao quyền cho thế hệ nhân sự trẻ Việt Nam, giúp họ xây dựng sự tự tin vững chắc thông qua việc trang bị những kỹ năng, công cụ 'thực chiến' trong một môi trường cộng đồng luôn hỗ trợ, chia sẻ và cùng nhau phát triển."
+                        </p>
+                        <h4 class="text-2xl font-bold text-brand-blue-dark mb-3">Giá Trị Cốt Lõi</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <i data-feather="check-circle" class="h-6 w-6 text-brand-green"></i>
+                                <span class="text-lg font-semibold">Thực chiến: 80% case study, 20% lý thuyết.</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <i data-feather="users" class="h-6 w-6 text-brand-green"></i>
+                                <span class="text-lg font-semibold">Cộng đồng: Học hỏi và phát triển cùng nhau.</span>
+                            </div>
+                             <div class="flex items-center space-x-3">
+                                <i data-feather="trending-up" class="h-6 w-6 text-brand-green"></i>
+                                <span class="text-lg font-semibold">Đổi mới: Luôn cập nhật xu hướng và công nghệ mới.</span>
+                            </div>
+                        </div>
+                    </div>
+                     <div>
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" alt="Đội ngũ đang thảo luận" class="rounded-lg shadow-2xl">
+                    </div>
+                </div>
+                
+                <!-- Đội ngũ giảng viên -->
+                <div class="text-center">
+                    <h3 class="text-3xl font-bold text-brand-blue-dark mb-12">Giảng Viên Đồng Hành</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <!-- Expert Card (MAIN - UPDATED) -->
+                        <div class="md:col-span-3 flex flex-col md:flex-row items-center gap-8 bg-gray-50 p-8 rounded-lg">
+                             <img src="https://i.pravatar.cc/200?u=rosie" class="w-48 h-48 rounded-full shadow-lg border-4 border-brand-orange flex-shrink-0">
+                             <div class="text-left">
+                                <h4 class="text-3xl font-bold">Rosie Đào Hạnh Giang</h4>
+                                <p class="text-brand-orange text-xl font-semibold">CEO - Build Talents</p>
+                                <p class="text-gray-600 mt-4 leading-relaxed">
+                                    Với hơn 20 năm kinh nghiệm trong lĩnh vực Quản trị con người, trong đó có 8 năm ở vai trò điều hành doanh nghiệp, cô Rosie Đào Hạnh Giang là một trong những chuyên gia hàng đầu tại Việt Nam. Cô sở hữu bằng Thạc sĩ Quản trị Nguồn Nhân lực Quốc tế và hiện là Nghiên cứu sinh tiến sĩ Quản trị Kinh doanh quốc tế tại Đại học Charisma.
+                                    <br><br>
+                                    Được chứng nhận cấp Lãnh đạo nhân sự chiến lược SPHRi bởi HRCI, cô còn là thành viên của Hiệp hội Coach Quốc tế WIAL và là chuyên gia trị liệu tâm lý ứng dụng NLP. Với hơn 10 năm kinh nghiệm đào tạo cho nhiều tập đoàn lớn, cô cam kết mang đến những kiến thức thực tiễn và có khả năng tạo ra sự thay đổi đột phá.
+                                </p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CONTACT -->
+        <section id="contact" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold gradient-text">Liên Hệ & Hỗ Trợ</h2>
+                    <p class="text-lg text-gray-600 mt-2">Chúng tôi luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc của bạn.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10 bg-white p-8 rounded-lg shadow-lg">
+                    <form action="#" method="POST">
+                         <h3 class="text-2xl font-bold text-brand-blue-dark mb-4">Gửi Yêu Cầu Hỗ Trợ</h3>
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-bold mb-2">Họ và Tên</label>
+                            <input type="text" id="name" name="name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-brand-blue-light" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-bold mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-brand-blue-light" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-700 font-bold mb-2">Nội dung</p>
+                            <textarea id="message" name="message" rows="5" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-brand-blue-light" required></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-brand-green text-white font-bold py-3 px-4 rounded-lg cta-button">Gửi Tin Nhắn</button>
+                    </form>
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-4">Thông Tin Liên Lạc</h3>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-blue-dark flex items-center"><i data-feather="mail" class="h-5 w-5 mr-3 text-brand-green"></i>Email</h4>
+                            <p class="text-gray-700">support@hocnghehr.com</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-blue-dark flex items-center"><i data-feather="phone" class="h-5 w-5 mr-3 text-brand-green"></i>Hotline (Zalo/ĐT)</h4>
+                            <p class="text-gray-700 font-bold text-lg">0908 043 403</p>
+                        </div>
+                        <div>
+                             <h4 class="text-xl font-bold text-brand-blue-dark flex items-center"><i data-feather="map-pin" class="h-5 w-5 mr-3 text-brand-green"></i>Địa chỉ</h4>
+                            <p class="text-gray-700">Tầng M, toà nhà Moore, 161 Ung Văn Khiêm, Phường 25, Quận Bình Thạnh, TP. Hồ Chí Minh</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-blue-dark mb-3">Kết nối với chúng tôi</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-gray-600 hover:text-brand-blue-light"><i data-feather="facebook" class="h-7 w-7"></i></a>
+                                <a href="#" class="text-gray-600 hover:text-brand-blue-light"><i data-feather="linkedin" class="h-7 w-7"></i></a>
+                                <a href="#" class="text-gray-600 hover:text-brand-blue-light"><i data-feather="youtube" class="h-7 w-7"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-blue-dark text-white">
+       <div class="container mx-auto px-6 py-8 text-center">
+            <p class="font-semibold text-lg">Build Talents - Đồng hành cùng sự phát triển vượt trội của bạn</p>
+            <p class="text-gray-500 text-sm mt-1">Bản quyền thuộc về Build Talents</p>
+        </div>
+    </footer>
+
+    <!-- MODAL FOR DETAIL VIEWS -->
+    <div id="detail-modal-container" class="detail-modal">
+        <div id="detail-modal-content" class="detail-modal-content">
+            <!-- Content will be injected here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Feather Icons Initialization
+        feather.replace();
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                 mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Smooth Scroll & Active Nav Link Highlighting
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        const removeActiveClasses = () => {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+        };
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.3 // Adjusted for better accuracy
+        };
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    removeActiveClasses();
+                    const activeLinks = document.querySelectorAll(`.nav-link[href="#${id}"]`);
+                    activeLinks.forEach(link => link.classList.add('active'));
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // --- MODAL & DETAIL VIEW LOGIC ---
+        const modalContainer = document.getElementById('detail-modal-container');
+        const modalContent = document.getElementById('detail-modal-content');
+
+        const pathDetails = {
+            foundation: `
+                <h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Lộ Trình: HR Foundation - Nền Tảng Vững Chắc</h2>
+                <p class="text-gray-600 mb-6">Đây là lộ trình khởi đầu hoàn hảo, trang bị cho bạn kiến thức tổng quan và các kỹ năng cốt lõi nhất để tự tin bước chân vào ngành Nhân sự, dù bạn là sinh viên mới ra trường hay người chuyển ngành.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 1: Tổng Quan Quản Trị Nhân Sự Hiện Đại</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Vai trò chiến lược của HR trong doanh nghiệp thế kỷ 21.</li>
+                            <li>Bài 2: Giải mã các mảng chức năng: Tuyển dụng, C&B, L&D, ER.</li>
+                            <li>Bài 3: Xây dựng chân dung và lộ trình sự nghiệp của người làm Nhân sự.</li>
+                            <li>Bài 4: Case Study: Phân tích mô hình phòng HR tại một công ty SME.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 2: Luật Lao Động Ứng Dụng</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Giao kết Hợp đồng lao động - Những điều khoản "sống còn".</li>
+                            <li>Bài 2: Chấm dứt Hợp đồng lao động - Đúng luật, vẹn tình.</li>
+                            <li>Bài 3: Giải mã các quy định về Thời giờ làm việc, nghỉ ngơi, và An toàn lao động.</li>
+                            <li>Bài 4: Kỷ luật lao động & Trách nhiệm vật chất - Xử lý khủng hoảng.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 3: Nhập Môn Tuyển Dụng Thực Chiến</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Viết Bản mô tả công việc (JD) hấp dẫn và chuẩn SEO.</li>
+                            <li>Bài 2: Các kênh tìm kiếm ứng viên hiệu quả cho từng vị trí.</li>
+                            <li>Bài 3: Kỹ thuật sàng lọc CV và phỏng vấn qua điện thoại (phone screening).</li>
+                            <li>Bài 4: Thực hành: Sàng lọc 20 CV cho vị trí "Nhân viên Kinh doanh".</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 4: Hành Chính Nhân Sự Chuyên Nghiệp</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Quy trình Onboarding (Hội nhập) cho nhân viên mới.</li>
+                            <li>Bài 2: Quản lý Hồ sơ, Hợp đồng và các thủ tục liên quan.</li>
+                            <li>Bài 3: Xây dựng bộ template, biểu mẫu nhân sự cần thiết.</li>
+                            <li>Bài 4: Dự án tốt nghiệp: Xây dựng bộ quy trình Onboarding hoàn chỉnh.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 bg-green-100 border-l-4 border-brand-green text-green-800 p-4 rounded-md">
+                    <p class="font-bold">Học phí trọn gói: 6.999.000 VNĐ</p>
+                </div>
+                <button class="w-full mt-6 bg-brand-orange text-white font-bold py-3 px-4 rounded-lg cta-button">Đăng Ký Lộ Trình</button>
+            `,
+            recruitment: `
+                <h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Lộ Trình: Recruitment Expert - Chuyên Gia Tuyển Dụng</h2>
+                <p class="text-gray-600 mb-6">Không chỉ là tìm người, đây là lộ trình giúp bạn trở thành một kiến trúc sư nhân tài, có khả năng xây dựng và phát triển đội ngũ vững mạnh cho doanh nghiệp.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 1: Tuyển Dụng Chiến Lược & Xây Dựng Chân Dung Ứng Viên</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Từ yêu cầu tuyển dụng đến chiến lược sourcing đa kênh.</li>
+                            <li>Bài 2: Xây dựng chân dung ứng viên (Candidate Persona) và ma trận năng lực.</li>
+                            <li>Bài 3: Sáng tạo nội dung tuyển dụng thu hút ứng viên "chất".</li>
+                            <li>Bài 4: Case Study: Lập kế hoạch tuyển dụng cho vị trí "Product Manager".</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 2: Kỹ Thuật Phỏng Vấn & Đánh Giá Nâng Cao</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Làm chủ kỹ thuật phỏng vấn hành vi (BEI) và mô hình STAR.</li>
+                            <li>Bài 2: Thiết kế bài test và case study đánh giá năng lực thực tế.</li>
+                            <li>Bài 3: Kỹ thuật đặt câu hỏi đào sâu và "đọc vị" ứng viên.</li>
+                            <li>Bài 4: Thực hành: Role-play phỏng vấn một ứng viên cấp Senior.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 3: Xây Dựng Thương Hiệu Nhà Tuyển Dụng (Employer Branding)</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Định vị EVP (Employee Value Proposition) - Giá trị độc đáo của doanh nghiệp.</li>
+                            <li>Bài 2: Xây dựng kênh media (LinkedIn, Facebook, Blog) để kể câu chuyện công ty.</li>
+                            <li>Bài 3: Sáng tạo nội dung và hoạt động thu hút nhân tài.</li>
+                            <li>Bài 4: Case Study: Phân tích chiến dịch Employer Branding thành công.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 4: Phân Tích Dữ Liệu Tuyển Dụng (Recruitment Analytics)</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Các chỉ số tuyển dụng quan trọng (Time-to-hire, Cost-per-hire, Quality-of-hire...).</li>
+                            <li>Bài 2: Xây dựng dashboard tuyển dụng trên Excel/Google Sheets.</li>
+                            <li>Bài 3: Phân tích dữ liệu để tối ưu kênh tuyển dụng và cải thiện quy trình.</li>
+                            <li>Bài 4: Dự án tốt nghiệp: Xây dựng báo cáo hiệu quả tuyển dụng Quý.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 bg-green-100 border-l-4 border-brand-green text-green-800 p-4 rounded-md">
+                    <p class="font-bold">Học phí trọn gói: 9.999.000 VNĐ</p>
+                </div>
+                <button class="w-full mt-6 bg-brand-orange text-white font-bold py-3 px-4 rounded-lg cta-button">Đăng Ký Lộ Trình</button>
+            `,
+            generalist: `
+                <h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Lộ Trình: HR Generalist - Quản Trị Toàn Diện</h2>
+                <p class="text-gray-600 mb-6">Phát triển năng lực quản lý bao quát tất cả các mảng quan trọng của Nhân sự, trở thành một đối tác chiến lược tin cậy của ban lãnh đạo.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 1: Xây Dựng Hệ Thống Lương Thưởng 3P</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Tư duy và nguyên tắc cốt lõi của hệ thống lương 3P.</li>
+                            <li>Bài 2: P1 - Position: Xây dựng hệ thống chức danh và đánh giá giá trị công việc.</li>
+                            <li>Bài 3: P2 & P3 - Person & Performance: Xây dựng khung năng lực và hệ thống KPI.</li>
+                            <li>Bài 4: Thực hành: Xây dựng thang bảng lương cho một phòng ban cụ thể.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 2: Đào Tạo & Phát Triển Nguồn Nhân Lực (L&D)</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Phân tích nhu cầu đào tạo (TNA) và xây dựng kế hoạch năm.</li>
+                            <li>Bài 2: Thiết kế một chương trình đào tạo nội bộ hiệu quả.</li>
+                            <li>Bài 3: Xây dựng lộ trình phát triển nghề nghiệp (Career Path) cho nhân viên.</li>
+                            <li>Bài 4: Đo lường hiệu quả đào tạo theo mô hình Kirkpatrick.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 3: Quản Lý Hiệu Suất & Xây Dựng KPI/OKR</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: So sánh KPI và OKR - Khi nào nên dùng công cụ nào?</li>
+                            <li>Bài 2: Kỹ thuật xây dựng bộ KPI/OKR hiệu quả cho từng vị trí.</li>
+                            <li>Bài 3: Quy trình đánh giá hiệu suất và phản hồi (Performance Review & Feedback).</li>
+                            <li>Bài 4: Case Study: Triển khai OKR thành công tại một công ty công nghệ.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-brand-green mb-2 border-b-2 border-brand-green pb-1">Khóa 4: Văn Hóa Doanh Nghiệp & Gắn Kết Nhân Viên</h3>
+                        <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4">
+                            <li>Bài 1: Các mô hình văn hóa doanh nghiệp và cách xác định giá trị cốt lõi.</li>
+                            <li>Bài 2: Lập kế hoạch và triển khai các hoạt động gắn kết (Employee Engagement).</li>
+                            <li>Bài 3: Kỹ thuật tổ chức các buổi phỏng vấn nghỉ việc (Exit Interview) hiệu quả.</li>
+                            <li>Bài 4: Dự án tốt nghiệp: Xây dựng kế hoạch gắn kết nhân viên trong 1 Quý.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="mt-8 bg-green-100 border-l-4 border-brand-green text-green-800 p-4 rounded-md">
+                    <p class="font-bold">Học phí trọn gói: 12.999.000 VNĐ</p>
+                </div>
+                <button class="w-full mt-6 bg-brand-orange text-white font-bold py-3 px-4 rounded-lg cta-button">Đăng Ký Lộ Trình</button>
+            `
+        };
+
+        const resourceDetails = {
+            'recruitment-process': `
+                <h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Hướng Dẫn Toàn Tập: Quy Trình Tuyển Dụng 7 Bước Cho Doanh Nghiệp Việt Nam</h2>
+                <p class="text-gray-500 text-sm mb-4">Chuyên mục: Blog | Tác giả: Rosie Đào Hạnh Giang</p>
+                <div class="prose max-w-none text-gray-700 leading-relaxed">
+                    <p class="font-semibold">Tuyển dụng chưa bao giờ là một công việc dễ dàng. Đối với nhiều doanh nghiệp Việt Nam, quá trình này thường diễn ra theo cảm tính, thiếu hệ thống, dẫn đến một hậu quả đắt giá: tuyển sai người. Chi phí cho một lần tuyển dụng thất bại không chỉ là tiền bạc, mà còn là thời gian, cơ hội kinh doanh, và thậm chí là sự xáo trộn văn hóa nội bộ.</p>
+                    <p>Bài viết này sẽ là cẩm nang toàn tập, hướng dẫn bạn chi tiết qua <strong>Quy trình Tuyển dụng 7 Bước</strong>, được điều chỉnh để phù hợp nhất với bối cảnh và văn hóa doanh nghiệp tại Việt Nam.</p>
+                    <h3 class="font-bold text-xl text-brand-blue-dark mt-6">Bước 1: Xác định Nhu cầu và Lập Kế hoạch (Planning)</h3>
+                    <p>Đây là bước nền móng. Một kế hoạch vững chắc sẽ quyết định 50% thành công. Bạn cần làm rõ "chân dung" ứng viên với Hiring Manager, xây dựng Bản mô tả công việc (JD) rõ ràng, và xác định ngân sách lương. <em>Mẹo thực chiến:</em> Minh bạch về khoảng lương trong JD để lọc ứng viên không phù hợp ngay từ đầu.</p>
+                    <h3 class="font-bold text-xl text-brand-blue-dark mt-6">Bước 2: Tìm kiếm và Thu hút Ứng viên (Sourcing & Attraction)</h3>
+                    <p>Đừng chỉ đăng tin rồi ngồi chờ. Hãy chủ động tiếp cận ứng viên từ nhiều kênh: nội bộ (Employee Referral), các trang việc làm (Job Boards), và mạng xã hội (LinkedIn, Facebook Groups). <em>Mẹo thực chiến:</em> Employee Referral là "vũ khí bí mật" tại Việt Nam, hãy đầu tư nghiêm túc vào kênh này.</p>
+                    <h3 class="font-bold text-xl text-brand-blue-dark mt-6">Bước 3: Sàng lọc Hồ sơ (Screening)</h3>
+                    <p>Đây là bước lọc phễu đầu tiên. Hãy đối chiếu CV với các yêu cầu bắt buộc (must-have) trong JD và thực hiện một cuộc phỏng vấn ngắn qua điện thoại (10-15 phút) để xác nhận thông tin và mức lương mong muốn. <em>Mẹo thực chiến:</em> Quy tắc 48 giờ - cố gắng phản hồi cho ứng viên trong vòng 48 giờ để tạo trải nghiệm tốt.</p>
+                    <h3 class="font-bold text-xl text-brand-blue-dark mt-6">Bước 4: Phỏng vấn Chuyên sâu (Interviewing)</h3>
+                    <p>Đây là trái tim của quy trình. Sử dụng phương pháp phỏng vấn STAR (Situation, Task, Action, Result) để đánh giá năng lực và sự phù hợp văn hóa. Nên có ít nhất 2 vòng: vòng 1 với HR và vòng 2 với Hiring Manager. <em>Mẹo thực chiến:</em> Hãy huấn luyện kỹ năng phỏng vấn cho các Hiring Manager.</p>
+                    <h3 class="font-bold text-xl text-brand-blue-dark mt-6">Bước 5: Kiểm tra và Xác thực (Assessment & Reference Check)</h3>
+                    <p>Giúp xác thực lại những gì ứng viên thể hiện. Có thể sử dụng bài test kỹ thuật hoặc case study thực tế. Khi kiểm tra người tham chiếu (Reference Check), hãy luôn xin phép ứng viên trước. <em>Mẹo thực chiến:</em> Do văn hóa "dĩ hòa vi quý", hãy đặt các câu hỏi mở, dựa trên tình huống thay vì câu hỏi Có/Không.</p>
+                    <h3 class="font-bold text-xl text-brand-blue-dark mt-6">Bước 6: Gửi Thư mời và Đàm phán (Offering & Negotiation)</h3>
+                    <p>Trước khi gửi email, hãy gọi điện chúc mừng và thông báo các điều khoản chính. Thư mời nhận việc (Offer Letter) cần ghi rõ chức danh, ngày bắt đầu, và đặc biệt là mức lương GROSS hay NET. <em>Mẹo thực chiến:</em> Hãy trình bày toàn bộ "gói đãi ngộ" bao gồm cả thưởng và phúc lợi, không chỉ lương cơ bản.</p>
+                    <h3 class="font-bold text-xl text-brand-blue-dark mt-6">Bước 7: Hội nhập (Onboarding)</h3>
+                    <p>Tuyển dụng thành công là khi nhân viên vượt qua thời gian thử việc. Onboarding là cả một quá trình kéo dài 1-3 tháng, không chỉ là thủ tục ngày đầu. <em>Mẹo thực chiến:</em> Sự chuẩn bị làm nên tất cả. Đừng để nhân viên mới đến công ty trong ngày đầu tiên mà chưa có máy tính hay chỗ ngồi.</p>
+                    <p class="mt-8 font-semibold">Tuân thủ quy trình 7 bước này không phải là gánh nặng, mà là một khoản đầu tư chiến lược giúp bạn xây dựng một đội ngũ nhân tài vững mạnh - tài sản quý giá nhất của mọi doanh nghiệp.</p>
+                </div>
+            `,
+            // Add other resource details here...
+        };
+
+        const toolDetails = {
+            interview: `
+                <h2 class="text-3xl font-bold text-brand-blue-dark mb-4">AI Mô Phỏng Phỏng Vấn</h2>
+                <p class="text-gray-600 mb-6">Rèn luyện kỹ năng phỏng vấn của bạn trong một môi trường an toàn. Chọn vị trí bạn muốn thực hành, AI sẽ đóng vai ứng viên và đưa ra những câu trả lời thách thức.</p>
+                <div class="mb-4">
+                    <label for="role-select" class="block font-semibold mb-2">Chọn vị trí để phỏng vấn:</label>
+                    <select id="role-select" class="w-full p-2 border rounded-md">
+                        <option>Nhân viên Kinh doanh</option>
+                        <option>Chuyên viên Nhân sự</option>
+                        <option>Lập trình viên Front-end</option>
+                    </select>
+                </div>
+                <button class="w-full bg-brand-green text-white font-bold py-3 rounded-lg cta-button mb-6">Bắt Đầu Mô Phỏng</button>
+                <div class="h-64 bg-gray-50 p-4 rounded-lg border overflow-y-auto flex flex-col space-y-4">
+                    <div class="ai-chat-bubble self-start">
+                        <p class="text-sm">Xin chào, cảm ơn vì đã mời tôi đến buổi phỏng vấn hôm nay. Tôi đã sẵn sàng.</p>
+                    </div>
+                     <div class="user-chat-bubble self-end">
+                        <p class="text-sm">Chào bạn, rất vui được gặp bạn. Bạn có thể giới thiệu đôi chút về kinh nghiệm của mình ở vị trí tương tự không?</p>
+                    </div>
+                     <div class="ai-chat-bubble self-start">
+                        <p class="text-sm">Vâng, ở công ty cũ, tôi chịu trách nhiệm chính trong việc...</p>
+                    </div>
+                </div>
+            `,
+            writer: `
+                <h2 class="text-3xl font-bold text-brand-blue-dark mb-4">AI Trợ Lý Soạn Thảo HR</h2>
+                <p class="text-gray-600 mb-6">Tiết kiệm hàng giờ làm việc. Chỉ cần nhập yêu cầu, AI sẽ giúp bạn tạo ra các nội dung nhân sự chuyên nghiệp chỉ trong vài giây.</p>
+                <div class="mb-4">
+                    <label for="writer-prompt" class="block font-semibold mb-2">Nhập yêu cầu của bạn:</label>
+                    <textarea id="writer-prompt" rows="3" class="w-full p-2 border rounded-md" placeholder="Ví dụ: Viết email từ chối ứng viên Nguyễn Văn A cho vị trí Nhân viên Marketing một cách chuyên nghiệp và thân thiện."></textarea>
+                </div>
+                <button class="w-full bg-brand-green text-white font-bold py-3 rounded-lg cta-button mb-6">Tạo Nội Dung</button>
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <h4 class="font-bold mb-2">Kết quả gợi ý:</h4>
+                    <p class="text-sm text-gray-700"><strong>Tiêu đề:</strong> Về việc ứng tuyển vị trí Nhân viên Marketing</p>
+                    <p class="text-sm text-gray-700 mt-2">Chào bạn Nguyễn Văn A,</p>
+                    <p class="text-sm text-gray-700 mt-2">Đầu tiên, [Tên Công Ty] xin chân thành cảm ơn bạn đã quan tâm và dành thời gian ứng tuyển vào vị trí Nhân viên Marketing của chúng tôi.</p>
+                    <p class="text-sm text-gray-700 mt-2">Chúng tôi thực sự ấn tượng với kinh nghiệm và những thành tựu bạn đã chia sẻ. Tuy nhiên, sau quá trình cân nhắc kỹ lưỡng, chúng tôi rất tiếc phải thông báo rằng ở thời điểm hiện tại, chúng tôi sẽ ưu tiên các ứng viên có kinh nghiệm sâu hơn về mảng [ABC].</p>
+                    <p class="text-sm text-gray-700 mt-2">Chúng tôi sẽ lưu lại hồ sơ của bạn và xin phép liên hệ lại khi có vị trí khác phù hợp hơn trong tương lai. Chúc bạn sẽ sớm tìm được cơ hội tốt nhất cho mình.</p>
+                    <p class="text-sm text-gray-700 mt-4">Trân trọng,</p>
+                </div>
+            `,
+            cv: `
+                <h2 class="text-3xl font-bold text-brand-blue-dark mb-4">AI Chấm Điểm & Gợi Ý Sửa CV</h2>
+                <p class="text-gray-600 mb-6">Đừng để CV của bạn bị loại từ vòng đầu. Tải hồ sơ lên để AI phân tích và đưa ra những gợi ý cải thiện đắt giá.</p>
+                <div class="mb-6">
+                    <label class="w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-brand-blue-light hover:text-white">
+                        <i data-feather="upload-cloud" class="w-8 h-8"></i>
+                        <span class="mt-2 text-base leading-normal">Chọn một file CV (PDF, DOCX)</span>
+                        <input type='file' class="hidden" />
+                    </label>
+                </div>
+                <button class="w-full bg-brand-green text-white font-bold py-3 rounded-lg cta-button mb-6">Phân Tích CV</button>
+                <div class="bg-gray-50 p-4 rounded-lg border">
+                    <h4 class="font-bold mb-2">Kết quả phân tích (Mẫu):</h4>
+                    <p class="font-bold text-2xl text-brand-green">Điểm CV: 78/100</p>
+                    <ul class="list-disc list-inside space-y-2 mt-4 text-sm">
+                        <li><strong class="text-green-600">Điểm mạnh:</strong> Trình bày rõ ràng, không có lỗi chính tả.</li>
+                        <li><strong class="text-orange-500">Cần cải thiện:</strong> Nên sử dụng nhiều động từ hành động mạnh hơn (ví dụ: "Phụ trách" -> "Dẫn dắt", "Quản lý").</li>
+                         <li><strong class="text-orange-500">Cần cải thiện:</strong> Lượng hóa các thành tựu. Thay vì "Tăng doanh số", hãy viết "Tăng doanh số 25% trong Quý 1".</li>
+                         <li><strong class="text-red-500">Lỗi nghiêm trọng:</strong> Thiếu phần tóm tắt mục tiêu nghề nghiệp (Career Objective).</li>
+                    </ul>
+                </div>
+            `
+        };
+        
+        function showModal(content) {
+            modalContent.innerHTML = content + '<button class="close-modal-btn"><i data-feather="x" class="h-8 w-8 text-gray-500"></i></button>';
+            feather.replace(); // Re-initialize icons inside modal
+            modalContainer.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function hideModal() {
+            modalContainer.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- Event Listeners ---
+        document.querySelectorAll('.view-path-detail').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const pathKey = e.target.dataset.path;
+                const detailContent = pathDetails[pathKey] || '<p>Nội dung đang được cập nhật...</p>';
+                showModal(detailContent);
+            });
+        });
+
+        document.querySelectorAll('.view-tool-detail').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const toolKey = e.target.dataset.tool;
+                const detailContent = toolDetails[toolKey] || '<p>Công cụ đang được cập nhật...</p>';
+                showModal(detailContent);
+            });
+        });
+
+        function showResourceDetail(element) {
+             const resourceKey = element.dataset.resource;
+             const detailContent = resourceDetails[resourceKey] || '<p>Nội dung đang được cập nhật...</p>';
+             showModal(detailContent);
+        }
+
+        // Close modal logic
+        modalContainer.addEventListener('click', (e) => {
+            if (e.target === modalContainer || e.target.closest('.close-modal-btn')) {
+                hideModal();
+            }
+        });
+        
+    </script>
+</body>
+</html>
+
