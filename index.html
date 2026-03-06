@@ -12,17 +12,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/feather-icons"></script>
 
     <script>
+        // Custom Tailwind CSS Configuration
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         'oswald': ['Oswald', 'sans-serif'],
-                        'sans': ['Open Sans', 'sans-serif'],
+                        'sans': ['Open Sans', 'sans-serif'], // Fallback for body text
                     },
                     colors: {
                         'brand-orange': '#FF9800',
@@ -38,71 +38,129 @@
     </script>
 
     <style>
-        body { font-family: 'Open Sans', sans-serif; background-color: #f8fafc; }
-        h1, h2, h3, h4, h5, h6, .oswald-font { font-family: 'Oswald', sans-serif; }
-        .nav-link { position: relative; transition: color 0.3s ease; }
-        .nav-link::after {
-            content: ''; position: absolute; width: 0; height: 2px;
-            bottom: -4px; left: 50%; transform: translateX(-50%);
-            background-color: #FF9800; transition: width 0.3s ease;
+        body {
+            font-family: 'Oswald', sans-serif;
+            background-color: #f8fafc;
         }
-        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        p, span, li, textarea, input, div {
+            font-family: 'Open Sans', sans-serif; /* Setup base font for reading */
+        }
+        h1, h2, h3, h4, h5, h6, .nav-link, .cta-button {
+            font-family: 'Oswald', sans-serif;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FF9800;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
         .gradient-text {
             background: linear-gradient(to right, #1a237e, #5C6BC0);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .cta-button { transition: all 0.3s ease; }
+        .cta-button {
+            transition: all 0.3s ease;
+        }
         .cta-button:hover {
-            transform: translateY(-3px); box-shadow: 0 10px 20px -10px rgba(255, 152, 0, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(255, 152, 0, 0.6);
         }
-        .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
         .card-hover:hover {
-            transform: translateY(-8px); box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
         }
+        /* Styles for Modal/Detail Views */
         .detail-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); display: none; align-items: center;
-            justify-content: center; z-index: 100; opacity: 0; transition: opacity 0.3s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none; /* Initially hidden */
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
-        .detail-modal.show { display: flex; opacity: 1; }
+        .detail-modal.show {
+            display: flex;
+            opacity: 1;
+        }
         .detail-modal-content {
-            background: white; padding: 2.5rem; border-radius: 0.5rem; width: 90%;
-            max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
         }
-        .close-modal-btn { position: absolute; top: 1rem; right: 1rem; cursor: pointer; }
+        .close-modal-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+        }
         .hero-bg {
             background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop');
-            background-size: cover; background-position: center;
+            background-size: cover;
+            background-position: center;
         }
+        /* AI Tool Modal Styles */
         .ai-chat-bubble {
-            background-color: #f1f5f9; padding: 0.75rem 1rem; border-radius: 1rem;
-            border-top-left-radius: 0.25rem; max-width: 80%;
+            background-color: #f1f5f9;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border-top-left-radius: 0.25rem;
+            max-width: 80%;
         }
         .user-chat-bubble {
-            background-color: #c7d2fe; padding: 0.75rem 1rem; border-radius: 1rem;
-            border-top-right-radius: 0.25rem; max-width: 80%;
+            background-color: #c7d2fe;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border-top-right-radius: 0.25rem;
+            max-width: 80%;
         }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <header id="header" class="bg-white shadow-md sticky top-0 z-50">
+    <header id="header" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-6 py-3">
             <nav class="flex items-center justify-between">
-                <a href="#home" class="text-3xl font-bold text-brand-blue-dark tracking-wider oswald-font">
+                <a href="#home" class="text-3xl font-bold text-brand-blue-dark tracking-wider">
                     Hocnghe<span class="text-brand-orange">HR</span>.com
                 </a>
                 
-                <ul class="hidden md:flex items-center space-x-8 font-medium text-lg oswald-font">
+                <ul class="hidden md:flex items-center space-x-8 font-medium text-lg">
                     <li><a href="#home" class="nav-link active">Trang chủ</a></li>
                     <li><a href="#learning-paths" class="nav-link">Lộ trình học</a></li>
                     <li><a href="#resources" class="nav-link">Thư viện</a></li>
                     <li><a href="#ai-tools" class="nav-link">Công cụ AI</a></li>
                     <li><a href="#about" class="nav-link">Giới thiệu</a></li>
-                    <li><a href="tu-van.html" class="nav-link text-brand-orange hover:text-brand-orange">Tư vấn Doanh nghiệp</a></li>
+                    <li><a href="#contact" class="nav-link">Tư vấn</a></li>
                 </ul>
 
-                <a href="#learning-paths" class="hidden md:inline-block bg-brand-orange text-white font-bold py-2 px-6 rounded-full cta-button oswald-font">
+                <a href="#learning-paths" class="hidden md:inline-block bg-brand-orange text-white font-bold py-2 px-6 rounded-full cta-button">
                     Khám Phá Khóa Học
                 </a>
 
@@ -113,13 +171,13 @@
         </div>
 
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
-            <ul class="flex flex-col items-center space-y-4 py-4 font-medium oswald-font">
+            <ul class="flex flex-col items-center space-y-4 py-4 font-medium">
                 <li><a href="#home" class="nav-link mobile-nav-link active">Trang chủ</a></li>
                 <li><a href="#learning-paths" class="nav-link mobile-nav-link">Lộ trình học</a></li>
                 <li><a href="#resources" class="nav-link mobile-nav-link">Thư viện</a></li>
                 <li><a href="#ai-tools" class="nav-link mobile-nav-link">Công cụ AI</a></li>
                 <li><a href="#about" class="nav-link mobile-nav-link">Giới thiệu</a></li>
-                <li><a href="tu-van.html" class="nav-link mobile-nav-link text-brand-orange">Tư vấn Doanh nghiệp</a></li>
+                <li><a href="#contact" class="nav-link mobile-nav-link">Tư vấn</a></li>
                 <li>
                     <a href="#learning-paths" class="bg-brand-orange text-white font-bold py-2 px-6 rounded-full cta-button mt-4 inline-block">
                         Khám Phá Khóa Học
@@ -133,13 +191,13 @@
         <section id="home" class="relative hero-bg text-white pt-32 pb-24">
             <div class="absolute inset-0 bg-brand-blue-dark opacity-80"></div>
             <div class="container mx-auto px-6 text-center relative z-10">
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight tracking-wide oswald-font">
+                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight tracking-wide">
                     Nền Tảng Đào Tạo Nhân Sự <span class="text-brand-orange">Thực Chiến</span>
                 </h1>
                 <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto font-light">
                     Biến lý thuyết thành kỹ năng, biến thách thức thành cơ hội. Chúng tôi đồng hành cùng bạn trên mọi nấc thang sự nghiệp.
                 </p>
-                <a href="#learning-paths" class="bg-brand-orange text-white font-bold text-xl py-4 px-10 rounded-full cta-button shadow-lg oswald-font inline-block">
+                <a href="#learning-paths" class="bg-brand-orange text-white font-bold text-xl py-4 px-10 rounded-full cta-button shadow-lg">
                     Khám Phá Các Lộ Trình Học
                 </a>
             </div>
@@ -148,201 +206,3 @@
         <section class="py-20 bg-white">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold gradient-text oswald-font">Sự Tự Tin Thực Sự Đến Từ Năng Lực Thực Tế</h2>
-                    <p class="text-lg text-gray-600 mt-2">Chúng tôi thấu hiểu "nỗi đau" của bạn khi kiến thức sách vở không đủ để giải quyết vấn đề.</p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4">
-                            <div class="bg-red-100 text-red-500 p-3 rounded-full"><i data-feather="book-open" class="h-6 w-6"></i></div>
-                            <div>
-                                <h3 class="text-xl font-bold text-brand-blue-dark oswald-font">Kiến thức sách vở, thiếu thực tế</h3>
-                                <p class="text-gray-600">Bạn thuộc lòng lý thuyết nhưng lại "đứng hình" khi đối mặt với một case study nhân sự phức tạp từ sếp.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-4">
-                            <div class="bg-yellow-100 text-yellow-500 p-3 rounded-full"><i data-feather="compass" class="h-6 w-6"></i></div>
-                            <div>
-                                <h3 class="text-xl font-bold text-brand-blue-dark oswald-font">Mông lung về lộ trình phát triển</h3>
-                                <p class="text-gray-600">Bạn không biết cần học kỹ năng gì tiếp theo, làm gì để được thăng tiến lên vị trí Senior, Manager.</p>
-                            </div>
-                        </div>
-                         <div class="flex items-start space-x-4">
-                            <div class="bg-blue-100 text-blue-500 p-3 rounded-full"><i data-feather="users" class="h-6 w-6"></i></div>
-                            <div>
-                                <h3 class="text-xl font-bold text-brand-blue-dark oswald-font">"Đơn độc" trên con đường sự nghiệp</h3>
-                                <p class="text-gray-600">Bạn thiếu một người dẫn dắt, một cộng đồng chuyên môn để hỏi đáp và chia sẻ kinh nghiệm.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-brand-green text-white p-8 rounded-lg shadow-xl">
-                        <h3 class="text-3xl font-bold mb-4 oswald-font">Giải Pháp: Thực Chiến Để Tự Tin</h3>
-                        <p class="text-lg font-light leading-relaxed">
-                            Chúng tôi không phải là một thư viện khóa học, mà là một "phòng gym" cho sự nghiệp. Với 80% thời lượng tập trung vào <span class="font-semibold">case study thực tế từ các doanh nghiệp Việt Nam</span>, <span class="font-semibold">dự án ứng dụng</span> và <span class="font-semibold">bộ công cụ chuyên nghiệp</span>, bạn sẽ được "rèn luyện" để tự tin giải quyết mọi bài toán nhân sự và bứt phá.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="learning-paths" class="py-20 bg-gray-50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold gradient-text oswald-font">Lộ Trình Học Chuyên Biệt</h2>
-                    <p class="text-lg text-gray-600 mt-2 max-w-3xl mx-auto">Đừng học các kỹ năng rời rạc. Hãy chinh phục mục tiêu sự nghiệp với một lộ trình được thiết kế bài bản.</p>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-lg shadow-lg text-center card-hover border-t-4 border-brand-orange">
-                        <i data-feather="star" class="h-12 w-12 text-brand-orange mx-auto mb-4"></i>
-                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2 oswald-font">HR Foundation: Nền Tảng</h3>
-                        <p class="text-gray-600 mb-4"><strong>Dành cho:</strong> Sinh viên mới ra trường, người chuyển ngành.</p>
-                        <button data-path="foundation" class="view-path-detail font-bold text-brand-green hover:underline">Xem chi tiết &rarr;</button>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-lg text-center card-hover border-t-4 border-brand-green">
-                        <i data-feather="target" class="h-12 w-12 text-brand-green mx-auto mb-4"></i>
-                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2 oswald-font">Recruitment Expert</h3>
-                        <p class="text-gray-600 mb-4"><strong>Dành cho:</strong> Recruiter 1-2 năm kinh nghiệm.</p>
-                        <button data-path="recruitment" class="view-path-detail font-bold text-brand-green hover:underline">Xem chi tiết &rarr;</button>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-lg text-center card-hover border-t-4 border-brand-blue-light">
-                        <i data-feather="bar-chart-2" class="h-12 w-12 text-brand-blue-light mx-auto mb-4"></i>
-                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2 oswald-font">HR Generalist</h3>
-                        <p class="text-gray-600 mb-4"><strong>Dành cho:</strong> HR Executive muốn phát triển toàn diện.</p>
-                        <button data-path="generalist" class="view-path-detail font-bold text-brand-green hover:underline">Xem chi tiết &rarr;</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="ai-tools" class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                 <div class="relative text-center mb-16">
-                    <img src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=2070&auto=format&fit=crop" alt="Trợ lý AI" class="w-full h-64 object-cover rounded-lg opacity-80"/>
-                    <div class="absolute inset-0 bg-brand-blue-dark bg-opacity-70 flex flex-col justify-center items-center rounded-lg p-4">
-                        <h2 class="text-4xl font-bold text-white oswald-font">Trợ Lý Nhân Sự AI 4.0</h2>
-                        <p class="text-lg text-gray-200 mt-2">Điểm nhấn công nghệ độc đáo, giúp bạn làm việc hiệu quả và chuyên nghiệp hơn.</p>
-                    </div>
-                </div>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-lg shadow-md text-center card-hover border border-gray-100">
-                        <i data-feather="mic" class="h-12 w-12 text-brand-green mx-auto mb-4"></i>
-                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2 oswald-font">Mô phỏng phỏng vấn</h3>
-                        <p class="text-gray-600 mb-4">Thực hành phỏng vấn với AI, nhận phản hồi tức thì.</p>
-                        <button data-tool="interview" class="view-tool-detail font-bold text-brand-orange hover:underline">Thử ngay &rarr;</button>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md text-center card-hover border border-gray-100">
-                        <i data-feather="edit" class="h-12 w-12 text-brand-blue-light mx-auto mb-4"></i>
-                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2 oswald-font">Trợ lý soạn thảo HR</h3>
-                        <p class="text-gray-600 mb-4">AI hỗ trợ viết JD, email, chính sách... chuyên nghiệp.</p>
-                        <button data-tool="writer" class="view-tool-detail font-bold text-brand-orange hover:underline">Thử ngay &rarr;</button>
-                    </div>
-                    <div class="bg-white p-8 rounded-lg shadow-md text-center card-hover border border-gray-100">
-                        <i data-feather="file-text" class="h-12 w-12 text-brand-blue-dark mx-auto mb-4"></i>
-                        <h3 class="text-2xl font-bold text-brand-blue-dark mb-2 oswald-font">Chấm điểm CV</h3>
-                        <p class="text-gray-600 mb-4">Tải CV lên để AI phân tích và đưa ra gợi ý cải thiện.</p>
-                        <button data-tool="cv" class="view-tool-detail font-bold text-brand-orange hover:underline">Thử ngay &rarr;</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="about" class="py-20 bg-gray-50">
-            <div class="container mx-auto px-6">
-                 <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold gradient-text oswald-font">Đội Ngũ Đồng Hành</h2>
-                </div>
-                <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-10 bg-white p-10 rounded-2xl shadow-xl border-t-4 border-brand-orange">
-                     <img src="https://i.pravatar.cc/300?u=rosie" alt="CEO Rosie Đào Hạnh Giang" class="w-56 h-56 rounded-full shadow-lg border-4 border-brand-orange flex-shrink-0 object-cover">
-                     <div class="text-left">
-                        <h4 class="text-3xl font-bold text-brand-blue-dark oswald-font">Rosie Đào Hạnh Giang</h4>
-                        <p class="text-brand-green text-xl font-bold mb-4">CEO Build Talents</p>
-                        <p class="text-gray-700 leading-relaxed">
-                            Với hơn 20 năm kinh nghiệm Quản trị con người và 8 năm điều hành doanh nghiệp, cô Rosie Đào Hạnh Giang là chuyên gia hàng đầu tại Việt Nam. Cô sở hữu bằng Thạc sĩ Quản trị Nguồn Nhân lực Quốc tế và hiện là Nghiên cứu sinh tiến sĩ tại Đại học Charisma.
-                            <br><br>
-                            Sở hữu chứng nhận Lãnh đạo nhân sự chiến lược SPHRi bởi HRCI và là thành viên Hiệp hội Coach Quốc tế WIAL. Cô cam kết mang đến những kiến thức thực tiễn có sức mạnh tạo ra sự thay đổi đột phá cho cả cá nhân và tổ chức.
-                        </p>
-                     </div>
-                </div>
-            </div>
-        </section>
-        
-        <section id="contact" class="py-20 bg-white border-t border-gray-200">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-4xl font-bold gradient-text mb-8 oswald-font">Kết Nối Với Chúng Tôi</h2>
-                <div class="max-w-3xl mx-auto grid md:grid-cols-3 gap-6">
-                    <div class="p-6">
-                        <i data-feather="mail" class="h-8 w-8 text-brand-green mx-auto mb-3"></i>
-                        <p class="font-bold text-brand-blue-dark">support@hocnghehr.com</p>
-                    </div>
-                    <div class="p-6">
-                        <i data-feather="phone" class="h-8 w-8 text-brand-orange mx-auto mb-3"></i>
-                        <p class="font-bold text-brand-blue-dark text-xl">0908 043 403</p>
-                    </div>
-                    <div class="p-6">
-                        <i data-feather="map-pin" class="h-8 w-8 text-brand-blue-light mx-auto mb-3"></i>
-                        <p class="text-sm text-gray-600">Tầng M, toà nhà Moore, 161 Ung Văn Khiêm, P.25, Bình Thạnh, HCM</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="bg-brand-blue-dark text-white">
-       <div class="container mx-auto px-6 py-10 text-center">
-            <h3 class="text-2xl font-bold mb-2 oswald-font">Build Talents</h3>
-            <p class="font-semibold text-lg text-gray-300">Đồng hành cùng sự phát triển vượt trội của bạn</p>
-            <p class="text-brand-orange italic tracking-widest font-light mt-4 oswald-font">"Together go Beyond"</p>
-            <p class="text-gray-500 text-sm mt-6">© 2026 Bản quyền thuộc về Build Talents.</p>
-        </div>
-    </footer>
-
-    <div id="detail-modal-container" class="detail-modal">
-        <div id="detail-modal-content" class="detail-modal-content"></div>
-    </div>
-
-    <script>
-        feather.replace();
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-        mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
-        mobileNavLinks.forEach(link => { link.addEventListener('click', () => { mobileMenu.classList.add('hidden'); }); });
-        
-        // Modal Logic
-        const modalContainer = document.getElementById('detail-modal-container');
-        const modalContent = document.getElementById('detail-modal-content');
-
-        const pathDetails = {
-            foundation: `<h2 class="text-3xl font-bold text-brand-blue-dark mb-4">HR Foundation</h2><p class="text-gray-600 mb-6">Nội dung chi tiết đang được cập nhật...</p>`,
-            recruitment: `<h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Recruitment Expert</h2><p class="text-gray-600 mb-6">Nội dung chi tiết đang được cập nhật...</p>`,
-            generalist: `<h2 class="text-3xl font-bold text-brand-blue-dark mb-4">HR Generalist</h2><p class="text-gray-600 mb-6">Nội dung chi tiết đang được cập nhật...</p>`
-        };
-        const toolDetails = {
-            interview: `<h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Mô phỏng phỏng vấn</h2><p class="text-gray-600">Tính năng đang trong giai đoạn Beta.</p>`,
-            writer: `<h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Trợ lý soạn thảo HR</h2><p class="text-gray-600">Tính năng đang trong giai đoạn Beta.</p>`,
-            cv: `<h2 class="text-3xl font-bold text-brand-blue-dark mb-4">Chấm điểm CV</h2><p class="text-gray-600">Tính năng đang trong giai đoạn Beta.</p>`
-        };
-
-        function showModal(content) {
-            modalContent.innerHTML = content + '<button class="close-modal-btn"><i data-feather="x" class="h-8 w-8 text-gray-500"></i></button>';
-            feather.replace();
-            modalContainer.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-        function hideModal() {
-            modalContainer.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.querySelectorAll('.view-path-detail').forEach(btn => {
-            btn.addEventListener('click', (e) => { showModal(pathDetails[e.target.dataset.path]); });
-        });
-        document.querySelectorAll('.view-tool-detail').forEach(btn => {
-            btn.addEventListener('click', (e) => { showModal(toolDetails[e.target.dataset.tool]); });
-        });
-        modalContainer.addEventListener('click', (e) => {
-            if (e.target === modalContainer || e.target.closest('.close-modal-btn')) hideModal();
-        });
-    </script>
-</body>
-</html>
