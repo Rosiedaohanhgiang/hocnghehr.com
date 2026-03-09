@@ -1,208 +1,75 @@
-<!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hocnghehr.com - Nền Tảng Đào Tạo Nhân Sự Thực Chiến</title>
-    
-    <meta name="description" content="Hocnghehr.com là nền tảng đào tạo nhân sự thực chiến, cung cấp các lộ trình và khóa học dựa trên case study thực tế tại Việt Nam, giúp bạn tự tin bứt phá trong sự nghiệp.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/feather-icons"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Feather Icons Initialization
+            feather.replace();
 
-    <script>
-        // Custom Tailwind CSS Configuration
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'oswald': ['Oswald', 'sans-serif'],
-                        'sans': ['Open Sans', 'sans-serif'], // Fallback for body text
-                    },
-                    colors: {
-                        'brand-orange': '#FF9800',
-                        'brand-green': '#009688',
-                        'brand-blue': {
-                            'light': '#5C6BC0',
-                            'dark': '#1a237e',
-                        },
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                     mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth Scroll & Active Nav Link Highlighting
+            // ... (Giữ nguyên các logic UI khác của bạn ở đây) ...
+
+            // --- FORM SUBMIT LOGIC GỬI VỀ TELEGRAM (VIA GOOGLE APPS SCRIPT) ---
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                const formMessage = document.getElementById('form-message');
+                const submitButton = document.getElementById('submit-contact-form');
+
+                contactForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    // Simple validation
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const message = document.getElementById('message').value;
+
+                    if (!name || !email || !message) {
+                        formMessage.textContent = 'Vui lòng điền đầy đủ các trường thông tin bắt buộc.';
+                        formMessage.className = 'text-center mb-4 p-3 rounded-lg bg-red-100 text-red-700 block';
+                        return;
                     }
-                }
+
+                    submitButton.textContent = 'Đang gửi...';
+                    submitButton.disabled = true;
+
+                    // Đường link Web App Google Apps Script bạn vừa tạo
+                    const googleWebAppUrl = "https://script.google.com/macros/s/AKfycbzEDcJmjBzKMppFOzh-lbkcQ-KyDqCF3YF2A7wCPGtPrEZYTT2a6EYPszKOiHj6n7Djxg/exec";
+                    
+                    fetch(googleWebAppUrl, {
+                        method: "POST",
+                        body: new FormData(this)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.result === "success") {
+                            formMessage.textContent = 'Cảm ơn bạn! Chúng tôi đã nhận được yêu cầu và sẽ phản hồi sớm nhất.';
+                            formMessage.className = 'text-center mb-4 p-3 rounded-lg bg-green-100 text-green-700 block';
+                            contactForm.reset();
+                        } else {
+                            throw new Error("Lỗi máy chủ");
+                        }
+                    })
+                    .catch((err) => {
+                        formMessage.textContent = 'Gửi thất bại! Vui lòng thử lại sau.';
+                        formMessage.className = 'text-center mb-4 p-3 rounded-lg bg-red-100 text-red-700 block';
+                    })
+                    .finally(() => {
+                        submitButton.textContent = 'Gửi Yêu Cầu';
+                        submitButton.disabled = false;
+                    });
+                });
             }
-        }
+        });
     </script>
-
-    <style>
-        body {
-            font-family: 'Oswald', sans-serif;
-            background-color: #f8fafc;
-        }
-        p, span, li, textarea, input, div {
-            font-family: 'Open Sans', sans-serif; /* Setup base font for reading */
-        }
-        h1, h2, h3, h4, h5, h6, .nav-link, .cta-button {
-            font-family: 'Oswald', sans-serif;
-        }
-        .nav-link {
-            position: relative;
-            transition: color 0.3s ease;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #FF9800;
-            transition: width 0.3s ease;
-        }
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #1a237e, #5C6BC0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .cta-button {
-            transition: all 0.3s ease;
-        }
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px -10px rgba(255, 152, 0, 0.6);
-        }
-        .card-hover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
-        }
-        /* Styles for Modal/Detail Views */
-        .detail-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: none; /* Initially hidden */
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .detail-modal.show {
-            display: flex;
-            opacity: 1;
-        }
-        .detail-modal-content {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 0.5rem;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .close-modal-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            cursor: pointer;
-        }
-        .hero-bg {
-            background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-        }
-        /* AI Tool Modal Styles */
-        .ai-chat-bubble {
-            background-color: #f1f5f9;
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            border-top-left-radius: 0.25rem;
-            max-width: 80%;
-        }
-        .user-chat-bubble {
-            background-color: #c7d2fe;
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            border-top-right-radius: 0.25rem;
-            max-width: 80%;
-        }
-    </style>
-</head>
-<body class="text-gray-800">
-
-    <header id="header" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-6 py-3">
-            <nav class="flex items-center justify-between">
-                <a href="#home" class="text-3xl font-bold text-brand-blue-dark tracking-wider">
-                    Hocnghe<span class="text-brand-orange">HR</span>.com
-                </a>
-                
-                <ul class="hidden md:flex items-center space-x-8 font-medium text-lg">
-                    <li><a href="#home" class="nav-link active">Trang chủ</a></li>
-                    <li><a href="#learning-paths" class="nav-link">Lộ trình học</a></li>
-                    <li><a href="#resources" class="nav-link">Thư viện</a></li>
-                    <li><a href="#ai-tools" class="nav-link">Công cụ AI</a></li>
-                    <li><a href="#about" class="nav-link">Giới thiệu</a></li>
-                    <li><a href="#contact" class="nav-link">Tư vấn</a></li>
-                </ul>
-
-                <a href="#learning-paths" class="hidden md:inline-block bg-brand-orange text-white font-bold py-2 px-6 rounded-full cta-button">
-                    Khám Phá Khóa Học
-                </a>
-
-                <button id="mobile-menu-button" class="md:hidden">
-                    <i data-feather="menu" class="h-6 w-6 text-brand-blue-dark"></i>
-                </button>
-            </nav>
-        </div>
-
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
-            <ul class="flex flex-col items-center space-y-4 py-4 font-medium">
-                <li><a href="#home" class="nav-link mobile-nav-link active">Trang chủ</a></li>
-                <li><a href="#learning-paths" class="nav-link mobile-nav-link">Lộ trình học</a></li>
-                <li><a href="#resources" class="nav-link mobile-nav-link">Thư viện</a></li>
-                <li><a href="#ai-tools" class="nav-link mobile-nav-link">Công cụ AI</a></li>
-                <li><a href="#about" class="nav-link mobile-nav-link">Giới thiệu</a></li>
-                <li><a href="#contact" class="nav-link mobile-nav-link">Tư vấn</a></li>
-                <li>
-                    <a href="#learning-paths" class="bg-brand-orange text-white font-bold py-2 px-6 rounded-full cta-button mt-4 inline-block">
-                        Khám Phá Khóa Học
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </header>
-
-    <main>
-        <section id="home" class="relative hero-bg text-white pt-32 pb-24">
-            <div class="absolute inset-0 bg-brand-blue-dark opacity-80"></div>
-            <div class="container mx-auto px-6 text-center relative z-10">
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight tracking-wide">
-                    Nền Tảng Đào Tạo Nhân Sự <span class="text-brand-orange">Thực Chiến</span>
-                </h1>
-                <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto font-light">
-                    Biến lý thuyết thành kỹ năng, biến thách thức thành cơ hội. Chúng tôi đồng hành cùng bạn trên mọi nấc thang sự nghiệp.
-                </p>
-                <a href="#learning-paths" class="bg-brand-orange text-white font-bold text-xl py-4 px-10 rounded-full cta-button shadow-lg">
-                    Khám Phá Các Lộ Trình Học
-                </a>
-            </div>
-        </section>
-
-        <section class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16">
